@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import './tailwind.generated.css';
+import moment from "moment";
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -100,24 +102,24 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
+    <div className={"container mx-auto pt-10"}>
+      <h1 className={"text-center"}>My Hacker Stories</h1>
 
       <SearchForm
         searchTerm={searchTerm}
         onSearchInput={handleSearchInput}
         onSearchSubmit={handleSearchSubmit}
       />
+      <div className={"grid grid-cols-3 gap-4"}>
+        {stories.isError && <p>Something went wrong ...</p>}
 
-      <hr />
+        {stories.isLoading ? (
+          <p>Loading ...</p>
+        ) : (
+          <List list={stories.data} onRemoveItem={handleRemoveStory} />
+        )}
+      </div>
 
-      {stories.isError && <p>Something went wrong ...</p>}
-
-      {stories.isLoading ? (
-        <p>Loading ...</p>
-      ) : (
-        <List list={stories.data} onRemoveItem={handleRemoveStory} />
-      )}
     </div>
   );
 };
@@ -127,7 +129,7 @@ const SearchForm = ({
                       onSearchInput,
                       onSearchSubmit,
                     }) => (
-  <form onSubmit={onSearchSubmit}>
+  <form onSubmit={onSearchSubmit} className={"w-full my-10"}>
     <InputWithLabel
       id="search"
       value={searchTerm}
@@ -137,20 +139,20 @@ const SearchForm = ({
       <strong>Search:</strong>
     </InputWithLabel>
 
-    <button type="submit" disabled={!searchTerm}>
+    <button className={"shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"} type="submit" disabled={!searchTerm}>
       Submit
     </button>
   </form>
 );
 
 const InputWithLabel = ({
-                          id,
-                          value,
-                          type = 'text',
-                          onInputChange,
-                          isFocused,
-                          children,
-                        }) => {
+  id,
+  value,
+  type = 'text',
+  onInputChange,
+  isFocused,
+  children,
+}) => {
   const inputRef = React.useRef();
 
   React.useEffect(() => {
@@ -161,7 +163,7 @@ const InputWithLabel = ({
 
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <label className={"block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"} htmlFor={id}>{children}</label>
       &nbsp;
       <input
         ref={inputRef}
@@ -169,6 +171,7 @@ const InputWithLabel = ({
         type={type}
         value={value}
         onChange={onInputChange}
+        className={"mb-10 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"}
       />
     </>
   );
@@ -184,18 +187,19 @@ const List = ({ list, onRemoveItem }) =>
   ));
 
 const Item = ({ item, onRemoveItem }) => (
-  <div>
-    <span>
+  <div className={"max-w-sm rounded overflow-hidden shadow-lg px-6 py-4 flex flex-col"}>
+    <div className={"text-sm text-gray-600"}>{moment(new Date(item.created_at)).format("LL")}</div>
+    <div className={"font-bold text-xl mb-2"}>
       <a href={item.url}>{item.title}</a>
-    </span>
-    <span>{item.author}</span>
-    <span>{item.num_comments}</span>
-    <span>{item.points}</span>
-    <span>
-      <button type="button" onClick={() => onRemoveItem(item)}>
+    </div>
+    <div>By {item.author}</div>
+    <div>{item.num_comments} comments</div>
+    <div className={"mb-4"}>{item.points} points</div>
+    <div className={"text-center mt-auto"}>
+      <button className={"bg-transparent hover:bg-purple-400 text-purple-700 font-semibold hover:text-white py-2 px-4 border border-purple-400 hover:border-transparent rounded w-full"} type="button" onClick={() => onRemoveItem(item)}>
         Dismiss
       </button>
-    </span>
+    </div>
   </div>
 );
 
