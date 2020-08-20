@@ -103,7 +103,7 @@ const App = () => {
 
   return (
     <div className={"container mx-auto pt-10"}>
-      <h1 className={"text-center"}>My Hacker Stories</h1>
+      <h1 className={"text-center text-6xl"}>Hacker News</h1>
 
       <SearchForm
         searchTerm={searchTerm}
