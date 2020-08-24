@@ -125,11 +125,12 @@ const App = () => {
 };
 
 const SearchForm = ({
-                      searchTerm,
-                      onSearchInput,
-                      onSearchSubmit,
-                    }) => (
+  searchTerm,
+  onSearchInput,
+  onSearchSubmit,
+}) => (
   <form onSubmit={onSearchSubmit} className={"w-full my-10"}>
+    <div className={"md:flex md:items-center flex-wrap justify-between"}>
     <InputWithLabel
       id="search"
       value={searchTerm}
@@ -139,9 +140,11 @@ const SearchForm = ({
       <strong>Search:</strong>
     </InputWithLabel>
 
-    <button className={"shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"} type="submit" disabled={!searchTerm}>
+    <button className={"md:w-1/6 bg-red-500 hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded"} type="submit" disabled={!searchTerm}>
       Submit
     </button>
+    </div>
+
   </form>
 );
 
@@ -163,21 +166,21 @@ const InputWithLabel = ({
 
   return (
     <>
-      <label className={"block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"} htmlFor={id}>{children}</label>
-      &nbsp;
+      <label className={"block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 w-full"} htmlFor={id}>{children}</label>
       <input
         ref={inputRef}
         id={id}
         type={type}
         value={value}
         onChange={onInputChange}
-        className={"mb-10 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"}
+        className={"w-4/5 appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"}
       />
     </>
   );
 };
 
-const List = ({ list, onRemoveItem }) =>
+const List = ({ list, onRemoveItem }) => 
+
   list.map(item => (
     <Item
       key={item.objectID}
@@ -188,15 +191,16 @@ const List = ({ list, onRemoveItem }) =>
 
 const Item = ({ item, onRemoveItem }) => (
   <div className={"max-w-sm rounded overflow-hidden shadow-lg px-6 py-4 flex flex-col"}>
-    <div className={"text-sm text-gray-600"}>{moment(new Date(item.created_at)).format("LL")}</div>
-    <div className={"font-bold text-xl mb-2"}>
+    <div className={"text-sm text-gray-600 mb-2"}>{moment(new Date(item.created_at)).format("LL")}</div>
+    <div className={"text-2xl font-semibold text-gray-800 mb-4"}>
       <a href={item.url}>{item.title}</a>
     </div>
-    <div>By {item.author}</div>
-    <div>{item.num_comments} comments</div>
-    <div className={"mb-4"}>{item.points} points</div>
-    <div className={"text-center mt-auto"}>
-      <button className={"bg-transparent hover:bg-purple-400 text-purple-700 font-semibold hover:text-white py-2 px-4 border border-purple-400 hover:border-transparent rounded w-full"} type="button" onClick={() => onRemoveItem(item)}>
+    <div className={"mb-2 text-sm text-gray-600"}>By {item.author}</div>
+    <div className={"mb-2 text-sm text-gray-600"}>{item.num_comments} comments</div>
+    <div className={"mb-10 text-sm text-gray-600"}>{item.points} points</div>
+    <div className={"text-center mt-auto grid grid-flow-col gap-4"}>
+      <a className={"bg-purple-800 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"} href={item.url}>Read</a>
+      <button className={"bg-transparent hover:bg-purple-400 text-purple-800 font-semibold hover:text-white py-2 px-4 border border-purple-800 hover:border-transparent rounded"} type="button" onClick={() => onRemoveItem(item)}>
         Dismiss
       </button>
     </div>
