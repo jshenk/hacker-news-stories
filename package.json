@@ -11,7 +11,7 @@
     "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.generated.css src/tailwind.config.js",
